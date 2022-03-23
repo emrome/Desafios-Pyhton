@@ -126,11 +126,10 @@ print("Cantidad de letras \"a\" en "+cadena+" es: ",contador)
 
 # Desafio_7
 ```Py
-caracter=input("Ingrese un caracter: ")
-if caracter=="\"":
-    print("El caracter es una comilla")
-else:
-    print("No es comilla")
+for c in range(4):
+    cadena=input("Ingrese una cadena: ")
+    if "r" in cadena:
+        print("La cadena \"{}\" contiene r".format(cadena))
 ```
 
 # Desafio_8
