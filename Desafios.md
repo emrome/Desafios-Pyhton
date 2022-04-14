@@ -64,6 +64,35 @@ Calcular cuántos tienen notas menores al promedio
 * Deberíamos ingresar no sólo las notas, sino también los nombres de los estudiantes.
 ¿Qué soluciones proponen?
 
+## ```Desafio 12 ```[Resolución](#Desafio_12)
+**Queremos escribir una función que imprima sus argumentos agregando de qué tipo son**
+
+* Por ejemplo, podríamos invocarla de la siguiente manera:
+```
+imprimo(1) --> 1 es de tipo <class 'int'>
+imprimo(2, "hola") --> 2 es de tipo <class 'int'>, hola es de tipo <class 'str'>
+imprimo([1,2], "hola", 3.2) --> [1, 2] es de tipo <class 'list', hola es de tipo <class 'str'>
+```
+
+## ```Desafio 13 ```[Resolución](#Desafio_13)
+**Queremos implementar una función que dada una cadena de texto, retorne las palabras que contiene en orden alfabético.**
+
+## ```Desafio 14 ```[Resolución](#Desafio_14)
+**Queremos implementar una función que dada una colección con datos de usuarios de un determinado juego (por ejemplo nombre, nivel y puntaje), queremos retornar esta colección ordenada de acuerdo al nombre.**
+
+## ```Desafio 15 ```[Resolución](#Desafio_15)
+**Usando expresiones lambda escribir una función que permita codificar una frase según el siguiente algoritmo:**
+```
+encripto("a") --> "b"
+encripto("ABC") --> "BCD"
+encripto("Rock2021") --> "Spdl3132"
+```
+
+## ```Desafio 16 ```[Resolución](#Desafio_16)
+**Dado el conjunto de datos con series y películas de Netflix, queremos:**
+* 1. guardar en otro archivo las peliculas agregadas en el año 2021.
+* 2. los cinco (5) países con más producciones en Netflix.
+
 # Desafio_1
 ```Py
 num=int(input("Ingrese un numero: "))
@@ -203,5 +232,105 @@ print("Promedio de notas: {:.2f}".format(promedio))
 print("Lista de estudiantes por debajo del promedio ")
 for elem in estudiantes_debajo_promedio:
     print(elem+"\n")
+```
+# Desafio_12
+```Py
+def imprimo(*args):
+    for i in range(len(args)):
+        print(f'{args[i]} de tipo {type(args[i])}')
+
+imprimo(1) 
+imprimo(2, "hola")
+imprimo([1,2], "hola", 3.2)
+```
+
+# Desafio_13
+```Py
+def ordeno(cadena):
+    """retorna una lista con las palabras de la cadena recibida en orden alfabético
+    """
+    palabras=cadena.lower().split()
+    palabras.sort(key=str.lower)
+    return set(palabras)
+
+print(ordeno("Hoy hoy puede ser un gran día. "))
+```
+
+# Desafio_14
+```Py
+def ordeno_usuarios(usuarios):
+    """retorna la colección recibida ordenada de acuerdo al nombre.
+    """
+    return sorted (usuarios,key=lambda usuario: usuario[0])
+
+
+usuarios = [
+('JonY BoY', 'Nivel3', 15),
+('1962', 'Nivel1', 12),
+('caike', 'Nivel2', 1020),
+('Straka^', 'Nivel2', 1020),
+]
+print(ordeno_usuarios(usuarios))
+```
+
+# Desafio_15
+```Py
+def codigos_ascci(cadena):
+    """retorna una lista con strings de los cod ascci de cada caracter de la cadena
+    """
+    lista=list(map(lambda x:ord(x),cadena))
+    return lista
+
+
+def cifrado_Cesar(cadena):
+    """retorna la frase con el siguiente de cada caracter de la misma
+    """
+    caracteres=codigos_ascci(cadena)
+    frase=''.join(map(lambda x:chr(x+1),caracteres))
+    return frase
+
+
+print(cifrado_Cesar('abc'))
+#Hecho por la profe
+cadena='abc'
+cifrado_cesar=map(lambda x: chr(ord(x)+1),cadena)
+cifrado_Cesar=''.join(cifrado_Cesar)
+print(cifrado_Cesar)
+```
+
+# Desafio_16
+```Py
+import csv
+import os
+from collections import Counter
+
+
+ruta_completa =os.getcwd()
+ruta_archivo_netflix =os.path.join(ruta_completa, "netflix_titles.csv")
+ruta_peliculas_2021=os.path.join(ruta_completa, "peliculas_2021.csv")
+
+archivo_netflix=open(ruta_archivo_netflix, encoding='utf-8')
+archivo_peliculas=open(ruta_peliculas_2021,'w',encoding='utf-8')
+
+reader=csv.reader(archivo_netflix, delimiter=',')
+writer=csv.writer(archivo_peliculas)
+writer.writerow(next(reader))
+paises={}
+
+for linea in reader:
+    if linea[7]=="2021" and linea[1]=="Movie":
+        writer.writerow(linea)
+    if linea[5] in paises.keys():
+        paises[linea[5]]+=1
+    else:
+        paises[linea[5]]=1
+del paises['']
+top_5=dict(Counter(paises).most_common(5))
+print('Los 5 paises con más titulos: ')
+print(top_5)
+
+archivo_netflix.close()
+archivo_peliculas.close()
+
 ```
 
